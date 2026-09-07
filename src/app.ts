@@ -1,9 +1,11 @@
 import { createServer, IncomingMessage, ServerResponse } from "node:http";
+import { posts, Post } from "./data.ts";
 
-const port = 8080;
+const port = 8000;
 
 const server = createServer((req: IncomingMessage, res: ServerResponse) => {
-  res.setHeader("Content-type", "application/json; charset=utf-8");
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  /* Указали, что сервер будет отдавать JSON */
 
   res.end(
     JSON.stringify({
@@ -14,5 +16,5 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
 });
 
 server.listen(port, () => {
-  console.log(`Сервер запущен по адресу http://localhost:${port}`);
+  console.log(`Сервер запущен на порту http://localhost:${port} `);
 });
