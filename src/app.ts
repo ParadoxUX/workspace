@@ -1,35 +1,28 @@
-import { createServer, IncomingMessage, ServerResponse } from "node:http";
-import { getPosts, getPostById, notFound } from "./controllers.js";
+import express, { Express } from "express";
 import dotenv from "dotenv";
+import {
+  getAllPosts,
+  getPost,
+  createNewPost,
+  removePost,
+  notFound,
+} from "./controllers.js";
 
-dotenv.config(); // Загрузка переменных окружения из .env файла
+dotenv.config();
 
+const app: Express = express();
 const port = process.env.PORT;
 
-const server = createServer((req: IncomingMessage, res: ServerResponse) => {
-  const url = req.url || "/";
-  const method = req.method || "GET";
+app.use(express.json());
 
-  console.log(`${method} ${url}`);
-  const [path, queryString] = url.split("?");
+app.get("/posts", getAllPosts);
 
-  if (method === "GET") {
-    if (path === "/") {
-      getPosts(req, res);
-      return;
-    }
+app.get("/posts/:id", getPost);
 
-    const match = path.match(/^\/posts\/([a-zA-Z0-9]+)$/);
-    if (match) {
-      const id = match[1];
-      getPostById(req, res, { id });
-      return;
-    }
-  }
+app.get("/posts/:id", removePost);
 
-  notFound(req, res);
-});
+app.use(notFound);
 
-server.listen(port, () => {
-  console.log(`Сервер запущен на порту http://localhost:${port}`);
+app.listen(port, () => {
+  console.log(`Сервер запущен на http://localhost:${port}`);
 });
