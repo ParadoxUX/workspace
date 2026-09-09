@@ -1,7 +1,10 @@
 import { createServer, IncomingMessage, ServerResponse } from "node:http";
 import { getPosts, getPostById, notFound } from "./controllers.js";
+import dotenv from "dotenv";
 
-const port = 8000;
+dotenv.config(); // Загрузка переменных окружения из .env файла
+
+const port = process.env.PORT;
 
 const server = createServer((req: IncomingMessage, res: ServerResponse) => {
   const url = req.url || "/";
