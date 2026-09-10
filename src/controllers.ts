@@ -1,5 +1,11 @@
 import { Request, Response } from "express";
-import { getPosts, getPostById, createPost, deletePost } from "./models.js";
+import {
+  getPosts,
+  getPostById,
+  createPost,
+  deletePost,
+  getCommentsByPostId,
+} from "./models.js";
 
 export const getAllPosts = (req: Request, res: Response) => {
   const posts = getPosts();
@@ -44,6 +50,19 @@ export const removePost = (req: Request, res: Response) => {
   }
 
   res.status(204).send();
+};
+
+export const getPostComments = (req: Request, res: Response) => {
+  const { id } = req.params as { id: string };
+
+  const post = getPostById(id);
+  if (!post) {
+    res.status(404).json({ success: false, error: "Пост не найден" });
+    return;
+  }
+
+  const comments = getCommentsByPostId(id);
+  res.json({ success: true, data: comments });
 };
 
 export const notFound = (req: Request, res: Response) => {

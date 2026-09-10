@@ -1,4 +1,4 @@
-import { posts, Post, comments, Comment } from "./data.js";
+import { posts, Post, comments, Comment } from "../data.js";
 
 export function getPosts(): Post[] {
   return posts;
